@@ -3,36 +3,25 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
+	"text-editor/processor"
 )
 
 func main() {
-	// Step 1: Validate terminal arguments
-	args := os.Args[1:]
-	if len(args) != 2 {
-		fmt.Println("Error: Invalid arguments.")
-		fmt.Println("Usage: go run . <input_file> <output_file>")
-		return
+	if len(os.Args)!= 3 {
+		fmt.Println("Usage: go run. input.txt output.txt")
+		os.Exit(1)
 	}
 
-	inputFile := args[0]
-	outputFile := args[1]
-
-	// Step 2: Read the input file using the Go File System API
-	inputData, err := os.ReadFile(inputFile)
-	if err != nil {
-		fmt.Printf("Error reading input file: %v\n", err)
-		return
+	input, err := os.ReadFile(os.Args[1])
+	if err!= nil {
+		fmt.Println("Error reading file:", err)
+		os.Exit(1)
 	}
 
-	// Step 3: Core execution - process the raw text string
-	rawText := string(inputData)
-	processedText := ProcessText(rawText)
-
-	// Step 4: Write the completed string to the output file
-	err = os.WriteFile(outputFile, []byte(processedText), 0644)
-	if err != nil {
-		fmt.Printf("Error writing to output file: %v\n", err)
-		return
+	result := processor.Process(string(input))
+	
+	err = os.WriteFile(os.Args[2], []byte(result), 0644)
+	if err!= nil {
+		fmt.Println("Error writing file:", err)
+		os.Exit(1)
 	}
-}

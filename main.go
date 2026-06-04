@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"text-editor/processor"
+	"processor"
 )
 
 func main() {
